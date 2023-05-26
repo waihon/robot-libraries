@@ -37,7 +37,7 @@ Logging stuff
 
 Ignore failures in this test
     [Tags]  BuiltIn
-    Open Browser  http://www.amazon.com  ie
+    Open Browser  http://www.amazon.com  chrome
 
     # notice the log will contain a summary of errors which were encountered
     Run Keyword And Continue On Failure  Wait Until Page Contains  This text doesn't exist
