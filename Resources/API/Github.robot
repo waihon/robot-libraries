@@ -1,6 +1,6 @@
 *** Settings ***
 Library  RequestsLibrary
-Library  Selenium2Library  # only used to display something we get back from API test
+Library  SeleniumLibrary  # only used to display something we get back from API test
 
 *** Variables ***
 
@@ -11,7 +11,7 @@ Check Github Username
     Create Session  my_github_session  https://api.github.com
 
     # Make the call (and capture the response in a variable)
-    ${response} =  Get Request  my_github_session  users/robotframeworktutorial
+    ${response} =  Get On Session  my_github_session  users/robotframeworktutorial
 
     # Check the Response status
     Should Be Equal As Strings  ${response.status_code}  200
@@ -26,7 +26,7 @@ Display Emoji
     Create Session  my_github_session  https://api.github.com
 
     # Make the call (and capture the response in a variable)
-    ${response} =  Get Request  my_github_session  emojis
+    ${response} =  Get On Session  my_github_session  emojis
 
     # Check the Response status
     Should Be Equal As Strings  ${response.status_code}  200
@@ -34,4 +34,4 @@ Display Emoji
     # Check the Response body
     ${json} =  Set Variable  ${response.json()}
     ${emoji_url} =  Set Variable  ${json['aerial_tramway']}
-    Open Browser  ${emoji_url}  ie
+    Open Browser  ${emoji_url}  chrome
