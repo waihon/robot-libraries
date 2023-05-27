@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.0.2 (Python 3.11.3 on win32)" generated="20230527 10:47:30.409" rpa="false" schemaversion="3">
+<suite id="s1" name="Postgresql Tests" source="C:\Users\waihon.yew\OneDrive\Documents\SQA\robot-libraries\tests\postgresql_tests.robot">
+<test id="s1-t1" name="Insert a Record" line="16">
+<kw name="Connect" library="PostgreSQL" type="SETUP">
+<kw name="Connect To Database" library="DatabaseLibrary">
+<arg>psycopg2</arg>
+<arg>${DB_NAME}</arg>
+<arg>${DB_USER_NAME}</arg>
+<arg>${DB_USER_PASSWORD}</arg>
+<arg>${DB_HOST}</arg>
+<arg>${DB_PORT}</arg>
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
+<msg timestamp="20230527 10:47:30.534" level="INFO">Connecting using : psycopg2.connect(database=rftutorial, user=postgres, password=Pas$w0rd, host=localhost, port=5432) </msg>
+<status status="PASS" starttime="20230527 10:47:30.486" endtime="20230527 10:47:30.622"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:30.486" endtime="20230527 10:47:30.622"/>
+</kw>
+<kw name="Save Current Row Count" library="PostgreSQL">
+<kw name="Row Count" library="DatabaseLibrary">
+<var>${current_row_count}</var>
+<arg>SELECT * FROM demo_items;</arg>
+<doc>Uses the input `selectStatement` to query the database and returns the number of rows from the query. Set
+optional input `sansTran` to True to run command without an explicit transaction commit or rollback.</doc>
+<msg timestamp="20230527 10:47:30.623" level="INFO">Executing : Row Count  |  SELECT * FROM demo_items; </msg>
+<msg timestamp="20230527 10:47:30.625" level="INFO">${current_row_count} = 1</msg>
+<status status="PASS" starttime="20230527 10:47:30.623" endtime="20230527 10:47:30.625"/>
+</kw>
+<kw name="Set Suite Variable" library="BuiltIn">
+<arg>${PREVIOUS_ROW_COUNT}</arg>
+<arg>${current_row_count}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<msg timestamp="20230527 10:47:30.625" level="INFO">${PREVIOUS_ROW_COUNT} = 1</msg>
+<status status="PASS" starttime="20230527 10:47:30.625" endtime="20230527 10:47:30.625"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${current_row_count}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230527 10:47:30.625" level="INFO">1</msg>
+<status status="PASS" starttime="20230527 10:47:30.625" endtime="20230527 10:47:30.625"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:30.622" endtime="20230527 10:47:30.626"/>
+</kw>
+<kw name="Get Input Data" library="PostgreSQL">
+<kw name="Get Value From User" library="Dialogs">
+<var>${name}</var>
+<arg>Enter a First Name</arg>
+<doc>Pauses execution and asks user to input a value.</doc>
+<msg timestamp="20230527 10:47:41.752" level="INFO">${name} = Betty</msg>
+<status status="PASS" starttime="20230527 10:47:30.626" endtime="20230527 10:47:41.752"/>
+</kw>
+<kw name="Set Suite Variable" library="BuiltIn">
+<arg>${FIRST_NAME}</arg>
+<arg>${name}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<msg timestamp="20230527 10:47:41.754" level="INFO">${FIRST_NAME} = Betty</msg>
+<status status="PASS" starttime="20230527 10:47:41.753" endtime="20230527 10:47:41.754"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:30.626" endtime="20230527 10:47:41.754"/>
+</kw>
+<kw name="Insert Record" library="PostgreSQL">
+<kw name="Execute Sql String" library="DatabaseLibrary">
+<arg>INSERT INTO demo_items (item_name, first_name) VALUES ('New Item: ' || CAST(CURRENT_DATE AS VARCHAR(50)), '${FIRST_NAME}');</arg>
+<doc>Executes the sqlString as SQL commands. Useful to pass arguments to your sql. Set optional input `sansTran` to
+True to run command without an explicit transaction commit or rollback.</doc>
+<msg timestamp="20230527 10:47:41.756" level="INFO">Executing : Execute SQL String  |  INSERT INTO demo_items (item_name, first_name) VALUES ('New Item: ' || CAST(CURRENT_DATE AS VARCHAR(50)), 'Betty'); </msg>
+<status status="PASS" starttime="20230527 10:47:41.755" endtime="20230527 10:47:41.774"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:41.755" endtime="20230527 10:47:41.774"/>
+</kw>
+<kw name="Verify New Record Added" library="PostgreSQL">
+<kw name="Row Count" library="DatabaseLibrary">
+<var>${new_row_count}</var>
+<arg>SELECT * FROM demo_items;</arg>
+<doc>Uses the input `selectStatement` to query the database and returns the number of rows from the query. Set
+optional input `sansTran` to True to run command without an explicit transaction commit or rollback.</doc>
+<msg timestamp="20230527 10:47:41.775" level="INFO">Executing : Row Count  |  SELECT * FROM demo_items; </msg>
+<msg timestamp="20230527 10:47:41.776" level="INFO">${new_row_count} = 2</msg>
+<status status="PASS" starttime="20230527 10:47:41.775" endtime="20230527 10:47:41.776"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${new_row_count}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230527 10:47:41.776" level="INFO">2</msg>
+<status status="PASS" starttime="20230527 10:47:41.776" endtime="20230527 10:47:41.776"/>
+</kw>
+<kw name="Should Be Equal As Numbers" library="BuiltIn">
+<arg>${new_row_count}</arg>
+<arg>${PREVIOUS_ROW_COUNT + 1 }</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" starttime="20230527 10:47:41.776" endtime="20230527 10:47:41.777"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:41.775" endtime="20230527 10:47:41.777"/>
+</kw>
+<kw name="Disconnect" library="PostgreSQL" type="TEARDOWN">
+<kw name="Disconnect From Database" library="DatabaseLibrary">
+<doc>Disconnects from the database.</doc>
+<msg timestamp="20230527 10:47:41.777" level="INFO">Executing : Disconnect From Database</msg>
+<status status="PASS" starttime="20230527 10:47:41.777" endtime="20230527 10:47:41.777"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:41.777" endtime="20230527 10:47:41.777"/>
+</kw>
+<tag>PostgreSQLDB</tag>
+<status status="PASS" starttime="20230527 10:47:30.485" endtime="20230527 10:47:41.777"/>
+</test>
+<test id="s1-t2" name="Verify Insert Contains Correct Input Data" line="23">
+<kw name="Connect" library="PostgreSQL" type="SETUP">
+<kw name="Connect To Database" library="DatabaseLibrary">
+<arg>psycopg2</arg>
+<arg>${DB_NAME}</arg>
+<arg>${DB_USER_NAME}</arg>
+<arg>${DB_USER_PASSWORD}</arg>
+<arg>${DB_HOST}</arg>
+<arg>${DB_PORT}</arg>
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
+<msg timestamp="20230527 10:47:41.779" level="INFO">Connecting using : psycopg2.connect(database=rftutorial, user=postgres, password=Pas$w0rd, host=localhost, port=5432) </msg>
+<status status="PASS" starttime="20230527 10:47:41.778" endtime="20230527 10:47:41.854"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:41.778" endtime="20230527 10:47:41.855"/>
+</kw>
+<kw name="Verify Last Record" library="PostgreSQL">
+<kw name="Query" library="DatabaseLibrary">
+<var>${queryResults}</var>
+<arg>SELECT * FROM demo_items ORDER BY item_id DESC LIMIT 1</arg>
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<msg timestamp="20230527 10:47:41.855" level="INFO">Executing : Query  |  SELECT * FROM demo_items ORDER BY item_id DESC LIMIT 1 </msg>
+<msg timestamp="20230527 10:47:41.857" level="INFO">${queryResults} = [(2, 'New Item: 2023-05-27', 'Betty')]</msg>
+<status status="PASS" starttime="20230527 10:47:41.855" endtime="20230527 10:47:41.857"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${queryResults[0][2]}</arg>
+<arg>${FIRST_NAME}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" starttime="20230527 10:47:41.857" endtime="20230527 10:47:41.857"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${queryResults[0][2]}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230527 10:47:41.858" level="INFO">Betty</msg>
+<status status="PASS" starttime="20230527 10:47:41.857" endtime="20230527 10:47:41.858"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:41.855" endtime="20230527 10:47:41.858"/>
+</kw>
+<kw name="Disconnect" library="PostgreSQL" type="TEARDOWN">
+<kw name="Disconnect From Database" library="DatabaseLibrary">
+<doc>Disconnects from the database.</doc>
+<msg timestamp="20230527 10:47:41.864" level="INFO">Executing : Disconnect From Database</msg>
+<status status="PASS" starttime="20230527 10:47:41.858" endtime="20230527 10:47:41.864"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:41.858" endtime="20230527 10:47:41.864"/>
+</kw>
+<tag>PostgreSQLDB</tag>
+<status status="PASS" starttime="20230527 10:47:41.778" endtime="20230527 10:47:41.864"/>
+</test>
+<test id="s1-t3" name="Log All Rows" line="27">
+<kw name="Connect" library="PostgreSQL" type="SETUP">
+<kw name="Connect To Database" library="DatabaseLibrary">
+<arg>psycopg2</arg>
+<arg>${DB_NAME}</arg>
+<arg>${DB_USER_NAME}</arg>
+<arg>${DB_USER_PASSWORD}</arg>
+<arg>${DB_HOST}</arg>
+<arg>${DB_PORT}</arg>
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
+<msg timestamp="20230527 10:47:41.866" level="INFO">Connecting using : psycopg2.connect(database=rftutorial, user=postgres, password=Pas$w0rd, host=localhost, port=5432) </msg>
+<status status="PASS" starttime="20230527 10:47:41.865" endtime="20230527 10:47:41.937"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:41.865" endtime="20230527 10:47:41.937"/>
+</kw>
+<kw name="Log All Rows" library="PostgreSQL">
+<kw name="Query" library="DatabaseLibrary">
+<var>${queryResults}</var>
+<arg>SELECT * FROM demo_items ORDER BY item_id</arg>
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<msg timestamp="20230527 10:47:41.937" level="INFO">Executing : Query  |  SELECT * FROM demo_items ORDER BY item_id </msg>
+<msg timestamp="20230527 10:47:41.943" level="INFO">${queryResults} = [(1, 'New Item: 2023-05-26', 'Alfred'), (2, 'New Item: 2023-05-27', 'Betty')]</msg>
+<status status="PASS" starttime="20230527 10:47:41.937" endtime="20230527 10:47:41.943"/>
+</kw>
+<kw name="Log Many" library="BuiltIn">
+<arg>${queryResults}</arg>
+<doc>Logs the given messages as separate entries using the INFO level.</doc>
+<msg timestamp="20230527 10:47:41.943" level="INFO">[(1, 'New Item: 2023-05-26', 'Alfred'), (2, 'New Item: 2023-05-27', 'Betty')]</msg>
+<status status="PASS" starttime="20230527 10:47:41.943" endtime="20230527 10:47:41.943"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:41.937" endtime="20230527 10:47:41.943"/>
+</kw>
+<kw name="Disconnect" library="PostgreSQL" type="TEARDOWN">
+<kw name="Disconnect From Database" library="DatabaseLibrary">
+<doc>Disconnects from the database.</doc>
+<msg timestamp="20230527 10:47:41.944" level="INFO">Executing : Disconnect From Database</msg>
+<status status="PASS" starttime="20230527 10:47:41.944" endtime="20230527 10:47:41.944"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:41.944" endtime="20230527 10:47:41.944"/>
+</kw>
+<status status="PASS" starttime="20230527 10:47:41.865" endtime="20230527 10:47:41.944"/>
+</test>
+<doc>These are some SQL Server Database tests</doc>
+<status status="PASS" starttime="20230527 10:47:30.411" endtime="20230527 10:47:41.945"/>
+</suite>
+<statistics>
+<total>
+<stat pass="3" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="2" fail="0" skip="0">PostgreSQLDB</stat>
+</tag>
+<suite>
+<stat pass="3" fail="0" skip="0" id="s1" name="Postgresql Tests">Postgresql Tests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
